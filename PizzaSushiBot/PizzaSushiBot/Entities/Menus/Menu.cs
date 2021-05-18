@@ -21,7 +21,7 @@ namespace PizzaSushiBot.Entities.Menus
 
         protected abstract void NavigateMenu(ConsoleKey key);
 
-        protected void HighlightOption(string option)
+        protected virtual void HighlightOption(string option)
         {
             ForegroundColor = ConsoleColor.Black;
             BackgroundColor = ConsoleColor.White;

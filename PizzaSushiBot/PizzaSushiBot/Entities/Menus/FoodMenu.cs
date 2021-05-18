@@ -55,7 +55,7 @@ namespace PizzaSushiBot.Entities.Menus
                 if (i == _currentIndex)
                     HighlightOption(currentOption);
                 else
-                    WriteLine($"{currentOption}");
+                    WriteLine(currentOption);
             }
             Footer.DisplayShoppingInfo();
             ResetCursor();
@@ -76,6 +76,14 @@ namespace PizzaSushiBot.Entities.Menus
                 _currentIndex = 0;
             if (_currentIndex < 0)
                 _currentIndex = _options.Count - 1;
+        }
+
+        protected override void HighlightOption(string option)
+        {
+            ForegroundColor = ConsoleColor.Black;
+            BackgroundColor = ConsoleColor.White;
+            WriteLine(option);
+            ResetColor();
         }
 
         [Obsolete]

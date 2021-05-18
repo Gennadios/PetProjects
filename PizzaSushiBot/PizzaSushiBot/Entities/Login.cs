@@ -20,8 +20,9 @@ namespace PizzaSushiBot.Entities.Menus
         {
             Logger.Info("Initialized Login");
             InitializeUsersList();
-            Console.SetCursorPosition(0, 13);
+            SetCursorPosition(0, 13);
             CheckCredentials();
+            ForceReturnIfFailed();
         }
 
         private static void InitializeUsersList()
@@ -53,7 +54,7 @@ namespace PizzaSushiBot.Entities.Menus
         {
             while (true)
             {
-                ForceReturnIfLoginFailed();
+                if (_attempts == 0) break;
                 string username = GetUserName();
                 string password = GetUserPassword();
                 if (UserIsValid(username, password))
@@ -67,7 +68,7 @@ namespace PizzaSushiBot.Entities.Menus
                 else
                 {
                     _attempts--;
-                    Write(loginFailedMessage);
+                    Write("\n" + loginFailedMessage);
                     WriteLine($" {_attempts} attempts left.");
                     Logger.Info($"User failed login attempt #{3 - _attempts}");
                 }
@@ -83,13 +84,14 @@ namespace PizzaSushiBot.Entities.Menus
             return user;
         }
 
-        private static void ForceReturnIfLoginFailed()
+        private static void ForceReturnIfFailed()
         {
             if (_attempts == 0)
             {
                 WriteLine(new string('-', MenuWidth));
                 guestOrRegisterMessage.AlignCenterAndPrint(MenuWidth);
                 ReadKey(true);
+                _attempts = 0;
                 Logger.Info($"Force returned user to WelcomeMenu");
                 new WelcomeMenu().Display();
             }
@@ -97,7 +99,7 @@ namespace PizzaSushiBot.Entities.Menus
 
         private static string GetUserName()
         {
-            string username = string.Empty;
+            string username;
             while (true)
             {
                 Write("Username: ");
@@ -121,7 +123,7 @@ namespace PizzaSushiBot.Entities.Menus
                 pwd = InputMaskedPassword();
 
                 if (!IsValidPassword(pwd))
-                    WriteLine(passwordInvalidMessage);
+                    WriteLine("\n" + passwordInvalidMessage);
                 else
                     break;
             }

@@ -10,7 +10,7 @@ using static PizzaSushiBot.SystemStrings;
 
 namespace PizzaSushiBot.Entities
 {
-    sealed class Registration
+    class Registration
     {
         private static Registration _registration;
         private static List<User> _users;
