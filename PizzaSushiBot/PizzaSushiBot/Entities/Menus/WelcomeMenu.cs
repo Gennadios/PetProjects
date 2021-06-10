@@ -33,7 +33,7 @@ namespace PizzaSushiBot.Entities.Menus
                 ClearMenuFromLine(HeaderHeight);
                 DrawMenu();
 
-                pressedKey = Console.ReadKey(true).Key;
+                pressedKey = ReadKey(true).Key;
                 NavigateMenu(pressedKey);
             } while (pressedKey != ConsoleKey.Enter);
             GoToOption(_currentIndex);
@@ -41,7 +41,7 @@ namespace PizzaSushiBot.Entities.Menus
 
         protected override void DrawMenu()
         {
-            Console.WriteLine(new string('-', MenuWidth));
+            WriteLine(new string('-', MenuWidth));
             for (int i = 0; i < _options.Count; i++)
             {
                 string currentOption = _options[i];
@@ -49,7 +49,7 @@ namespace PizzaSushiBot.Entities.Menus
                 if (i == _currentIndex)
                     HighlightOption(currentOption);
                 else
-                    Console.Write($"{currentOption}");
+                    Write($"{currentOption}");
             }
             WriteLine();
             WriteLine(new string('-', MenuWidth));
@@ -74,7 +74,7 @@ namespace PizzaSushiBot.Entities.Menus
             switch (_currentIndex)
             {
                 case 0:
-                    Login.Initialize();
+                    new Login().Initialize();
                     break;
                 case 1:
                     User.GetInstance();

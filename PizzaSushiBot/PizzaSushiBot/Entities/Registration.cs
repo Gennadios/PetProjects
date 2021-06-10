@@ -10,7 +10,7 @@ using static PizzaSushiBot.SystemStrings;
 
 namespace PizzaSushiBot.Entities
 {
-    class Registration
+    class Registration : FormBase
     {
         private static Registration _registration;
         private static List<User> _users;
@@ -75,105 +75,6 @@ namespace PizzaSushiBot.Entities
             Logger.Info($"Added {user} to Database");
         }
 
-        private bool UsernameTaken(string username)
-        {
-            bool output = false;
-
-            using PizzaSushiContext context = new();
-            User user = context.Users.
-                Where(u => u.Username == username).
-                FirstOrDefault();
-
-            if (user?.Username == username) 
-                output = true;
-
-            return output;
-        }
-
-        private bool EmailTaken(string email)
-        {
-            bool output = false;
-
-            using PizzaSushiContext context = new();
-            User user = context.Users.
-                Where(u => u.Email == email).
-                FirstOrDefault();
-
-            if (user?.Email == email)
-                output = true;
-
-            return output;
-        }
-
-        private string GetUserEmail()
-        {
-            string email;
-            while (true)
-            {
-                Write("Email: ");
-                email = ReadLine();
-
-                if (!IsValidEmail(email))
-                    WriteLine(emailInvalidMessage);
-                if (EmailTaken(email))
-                    WriteLine(emailTakenMessage);
-                if (IsValidEmail(email) && !EmailTaken(email))
-                    break;
-            }
-            Logger.Info($"Prompted for user email, got {email}");
-            return email;
-        }
-
-        private string GetUserName()
-        {
-            string username;
-            while (true)
-            {
-                Write("Username: ");
-                username = ReadLine();
-
-                if (!IsValidName(username))
-                    WriteLine(usernameInvalidMessage);
-                if (UsernameTaken(username))
-                    WriteLine(usernameTakenMessage);
-                if (IsValidName(username) && !UsernameTaken(username))
-                    break;
-            }
-            return username;
-        }
-
-        private long GetUserPhone()
-        {
-            string phone;
-            while (true)
-            {
-                Write("Phone no.: +7");
-                phone = ReadLine();
-
-                if (!IsValidPhoneNumber(phone))
-                    WriteLine(phoneInvalidMessage);
-                else
-                    break;
-            }
-            return Convert.ToInt64(phone);
-        }
-
-        private string GetUserAddress()
-        {
-            string address;
-            while (true)
-            {
-                Write("Address: ");
-                address = ReadLine();
-
-                if (!IsValidAddress(address))
-                    WriteLine(addressInvalidMessage);
-                else
-                    break;
-            }
-            return address;
-        }
-
         private string GetUserPassword()
         {
             string pwd;
@@ -188,31 +89,6 @@ namespace PizzaSushiBot.Entities
                     break;
             }
             return pwd;
-        }
-
-        private static string InputMaskedPassword()
-        {
-            string pass = string.Empty;
-            ConsoleKey key;
-
-            do
-            {
-                var keyInfo = Console.ReadKey(true);
-                key = keyInfo.Key;
-
-                if (key == ConsoleKey.Backspace && pass.Length > 0)
-                {
-                    Console.Write("\b \b");
-                    pass = pass[0..^1];
-                }
-                else if (!char.IsControl(keyInfo.KeyChar))
-                {
-                    Console.Write("*");
-                    pass += keyInfo.KeyChar;
-                }
-            } while (key != ConsoleKey.Enter);
-
-            return pass;
         }
 
         protected virtual void OnUserRegistered()

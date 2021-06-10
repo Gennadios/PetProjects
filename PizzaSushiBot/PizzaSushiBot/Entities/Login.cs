@@ -11,12 +11,12 @@ using static PizzaSushiBot.Graphics.Settings;
 
 namespace PizzaSushiBot.Entities.Menus
 {
-    sealed class Login
+    sealed class Login : FormBase
     {
         private static byte _attempts = 3;
-        private static List<User> _users;
+        private List<User> _users;
 
-        internal static void Initialize()
+        internal void Initialize()
         {
             Logger.Info("Initialized Login");
             InitializeUsersList();
@@ -25,7 +25,7 @@ namespace PizzaSushiBot.Entities.Menus
             ForceReturnIfFailed();
         }
 
-        private static void InitializeUsersList()
+        private void InitializeUsersList()
         {
             if(_users == null)
             {
@@ -36,7 +36,7 @@ namespace PizzaSushiBot.Entities.Menus
             }
         }
 
-        private static bool UserIsValid(string username, string password)
+        private bool UserIsValid(string username, string password)
         {
             bool output = false;
 
@@ -50,7 +50,7 @@ namespace PizzaSushiBot.Entities.Menus
             return output;
         }
 
-        private static void CheckCredentials()
+        private void CheckCredentials()
         {
             while (true)
             {
@@ -75,7 +75,7 @@ namespace PizzaSushiBot.Entities.Menus
             }
         }
 
-        private static User ValidUser(string username)
+        private User ValidUser(string username)
         {
             User user = _users
                 .Where(u => u.Username == username)
@@ -84,7 +84,7 @@ namespace PizzaSushiBot.Entities.Menus
             return user;
         }
 
-        private static void ForceReturnIfFailed()
+        private void ForceReturnIfFailed()
         {
             if (_attempts == 0)
             {
@@ -97,7 +97,7 @@ namespace PizzaSushiBot.Entities.Menus
             }
         }
 
-        private static string GetUserName()
+        protected override string GetUserName()
         {
             string username;
             while (true)
@@ -114,7 +114,7 @@ namespace PizzaSushiBot.Entities.Menus
             return username;
         }
 
-        private static string GetUserPassword()
+        private string GetUserPassword()
         {
             string pwd;
             while (true)
@@ -131,32 +131,7 @@ namespace PizzaSushiBot.Entities.Menus
             return pwd;
         }
 
-        private static string InputMaskedPassword()
-        {
-            string pass = string.Empty;
-            ConsoleKey key;
-
-            do
-            {
-                var keyInfo = ReadKey(true);
-                key = keyInfo.Key;
-
-                if (key == ConsoleKey.Backspace && pass.Length > 0)
-                {
-                    Write("\b \b");
-                    pass = pass[0..^1];
-                }
-                else if (!char.IsControl(keyInfo.KeyChar))
-                {
-                    Write("*");
-                    pass += keyInfo.KeyChar;
-                }
-            } while (key != ConsoleKey.Enter);
-
-            return pass;
-        }
-
-        private static void LogInAs(User user)
+        private void LogInAs(User user)
         {
             User currentUser = User.GetInstance();
 

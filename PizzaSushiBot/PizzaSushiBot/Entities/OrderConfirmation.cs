@@ -8,7 +8,7 @@ using static PizzaSushiBot.Graphics.Settings;
 
 namespace PizzaSushiBot.Entities
 {
-    sealed class OrderConfirmation
+    sealed class OrderConfirmation : FormBase
     {
         private static OrderConfirmation _instance;
 
@@ -66,7 +66,7 @@ namespace PizzaSushiBot.Entities
             emailConfirmation.AlignCenterAndPrint(MenuWidth);
         }
 
-        private string GetUserEmail()
+        protected override string GetUserEmail()
         {
             string email;
             while (true)
@@ -88,41 +88,6 @@ namespace PizzaSushiBot.Entities
             orderIsReadyMessage.AlignCenterAndPrint(MenuWidth);
             ReadKey(true);
             Logger.Info("Session ended.");
-        }
-
-        private long GetUserPhone()
-        {
-            string phone;
-            while (true)
-            {
-                Write("Phone no.: +7");
-                phone = ReadLine();
-
-                if (!IsValidPhoneNumber(phone))
-                    WriteLine(phoneInvalidMessage);
-                else
-                    break;
-            }
-            Logger.Info($"Prompted for user phone, got {phone}");
-            return Convert.ToInt64(phone);
-        }
-
-        private string GetUserAddress()
-        {
-            
-            string address;
-            while (true)
-            {
-                Write("Address: ");
-                address = ReadLine();
-
-                if (!IsValidAddress(address))
-                    WriteLine(addressInvalidMessage);
-                else
-                    break;
-            }
-            Logger.Info($"Prompted for user address, got {address}");
-            return address;
         }
 
         internal void OnOrderConfirmed()
