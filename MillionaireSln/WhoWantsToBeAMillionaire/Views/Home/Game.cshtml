@@ -1,0 +1,21 @@
+﻿@model GameService
+
+<div>
+    <h3>Game</h3>
+    <p>Selected number of questions: @Model.NumberOfQuestions>
+</div>
+<div>
+    <h3>Questions</h3>
+    <ul style="font-weight: 700;">
+        @foreach (var question in Model.GetGameQuestions())
+        {
+            <li>@question.Key.Content</li>
+            <ul style="font-weight: 400">
+                @foreach (var answer in question.Value)
+                {
+                    <li>@answer.Content</li>
+                }
+            </ul>
+        }
+    </ul>
+</div>
